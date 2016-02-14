@@ -1,23 +1,23 @@
 {
-  "name": "ballclock",
-  "version": "1.0.0",
-  "description": "BallClock coding test",
-  "scripts": {
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
-    "lite": "lite-server",
-    "start": "concurrent \"npm run tsc:w\" \"npm run lite\" ",
-    "typings": "typings"
-  },
-  "author": "Jason Gotti",
-  "license": "ISC",
-  "dependencies": {
-  },
-  "devDependencies": {
-    "concurrently": "^1.0.0",
-    "jasmine-core": "^2.4.1",
-    "lite-server": "^2.0.1",
-    "typescript": "^1.7.5",
-    "typings": "^0.6.8"
-  }
+	"name": "ballclock",
+	"version": "1.0.0",
+	"description": "BallClock coding test",
+	"scripts": {
+		"postinstall": "npm run typings install",
+		"tsc": "tsc",
+		"tsc:w": "tsc -w",
+		"lite": "lite-server",
+		"start": "concurrent \"npm run tsc:w\" \"npm run lite\" ",
+		"typings": "typings"
+	},
+	"author": "Jason Gotti",
+	"license": "ISC",
+	"dependencies": {},
+	"devDependencies": {
+		"concurrently": "^1.0.0",
+		"jasmine-core": "^2.4.1",
+		"lite-server": "^2.0.1",
+		"typescript": "^1.7.5",
+		"typings": "^0.6.8"
+	}
 }
