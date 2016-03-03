@@ -1,4 +1,11 @@
 ts/node_modules/
 ts/typings/
-*.js
-*.map
+ts/*.js
+ts/*.map
+
+c#/packages
+c#/*/packages
+c#/*/[Bb]in/
+c#/*/[Oo]bj/
+c#/*.suo
+c#/*.user
