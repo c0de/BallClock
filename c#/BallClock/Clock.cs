@@ -9,7 +9,9 @@ namespace BallClock
     public class Clock
     {
         private List<int> _balls;
-        private List<int> _minuteTrack;
+        private Track _minuteTrack;
+        private Track _fiveTrack;
+        private Track _hourTrack;
 
         public Queue Queue { get; private set; }
 
@@ -22,7 +24,9 @@ namespace BallClock
 
             this.Queue = new Queue();
             this._balls = new List<int>();
-            this._minuteTrack = new List<int>();
+            this._hourTrack = new Track(11, this.Queue);
+            this._fiveTrack = new Track(11, this.Queue, this._hourTrack);
+            this._minuteTrack = new Track(4, this.Queue, this._fiveTrack);
 
             for (var i = 1; i <= balls; i++) {
                 this.Queue.AddBall(i);
@@ -32,37 +36,16 @@ namespace BallClock
 
         public string Start()
         {
-            this.AddMinute();
-
-            return string.Format("{0}", _balls.Count());
-        }
-
-        private void AddMinute()
-        {
-            var ball = this.Queue.GetBall();
-            if (this._minuteTrack.Count < 4)
+            var minutes = 0;
+            while (true)
             {
-                this._minuteTrack.Add(ball);
+                this._minuteTrack.AddBall(this.Queue.GetBall());
+                minutes += 1;
+                if (this._balls.SequenceEqual(this.Queue.Balls))
+                    break;
             }
-            else
-            {
-                this.MoveToQueue(this._minuteTrack);
-                this.AddHour(ball);
-                this._minuteTrack.Clear();
-            }
-        }
 
-        private void AddHour(int ball)
-        {
-        }
-
-        private void MoveToQueue(List<int> balls)
-        {
-            balls.Reverse();
-            foreach (var ball in balls)
-            {
-                this.Queue.AddBall(ball);
-            }
+            return string.Format("{0} balls cycle after {1} days", _balls.Count(), (minutes / 60) / 24);
         }
     }
 }

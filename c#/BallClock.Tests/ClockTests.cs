@@ -42,5 +42,19 @@ namespace BallClock.Tests
             var clock = new Clock(expected);
             Assert.IsTrue(clock.Start().StartsWith(expected.ToString()));
         }
+
+        [TestCase]
+        public void Returns15DaysWhenGiven30Balls()
+        {
+            var clock = new Clock(30);
+            Assert.AreEqual("30 balls cycle after 15 days", clock.Start());
+        }
+
+        [TestCase]
+        public void Returns378DaysWhenGiven45Balls()
+        {
+            var clock = new Clock(45);
+            Assert.AreEqual("45 balls cycle after 378 days", clock.Start());
+        }
     }
 }

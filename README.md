@@ -37,7 +37,7 @@ For each clock described in the input, your program should report the number of 
 `45`
 `0`
 
-### Output for the Sample Input
+### Sample Output for the Sample Input
 
 ```
 30 balls cycle after 15 days.
@@ -45,23 +45,4 @@ For each clock described in the input, your program should report the number of 
 
 ```
 45 balls cycle after 378 days.
-```
-
-## TypeScript
-```
-cd ts
-```
-```
-npm install
-```
-```
-npm start
-```
-
-## golang
-```
-go get -t github.com/smartystreets/goconvey
-```
-```
-$GOPATH/bin/goconvey
 ```
