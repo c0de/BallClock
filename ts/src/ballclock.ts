@@ -23,12 +23,12 @@ class BallClock {
 
 		for(var i = 1; i <= balls; i++) {
 			this._balls.push(i);
-			this._queue.push(i);			
+			this._queue.push(i);
 		}
 	}
 
 	private _nextBall(): number {
-		return this._queue.shift();		
+		return this._queue.shift();
 	}
 
 	private _addMinute() {
