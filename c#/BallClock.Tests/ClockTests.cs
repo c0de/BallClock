@@ -14,7 +14,8 @@ namespace BallClock.Tests
         {
             var expected = 27;
             var clock = new Clock(expected);
-            Assert.AreEqual(expected, clock.Queue.Length);
+
+            Assert.AreEqual(expected, clock.Queue.Count());
             Assert.AreEqual(1, clock.Queue.First());
             Assert.AreEqual(27, clock.Queue.Last());
         }
@@ -36,7 +37,7 @@ namespace BallClock.Tests
         }
 
         [TestCase]
-        public void RunReturnsAStringStartingWithTheNumberOfBallsGiven()
+        public void Run_ReturnsStringStartingWithTheNumberOfBallsGiven()
         {
             var expected = 27;
             var clock = new Clock(expected);
@@ -44,17 +45,28 @@ namespace BallClock.Tests
         }
 
         [TestCase]
-        public void Returns15DaysWhenGiven30Balls()
+        public void Run_Returns15DaysWhenGiven30Balls()
         {
             var clock = new Clock(30);
             Assert.AreEqual("30 balls cycle after 15 days", clock.Start());
         }
 
         [TestCase]
-        public void Returns378DaysWhenGiven45Balls()
+        public void Run_Returns378DaysWhenGiven45Balls()
         {
             var clock = new Clock(45);
             Assert.AreEqual("45 balls cycle after 378 days", clock.Start());
+        }
+
+        //[TestCase]
+        public void Run_All()
+        {
+            for (int i = 27; i <= 127; i++)
+            {
+                var clock = new Clock(i);
+                var result = clock.Start();
+                Assert.IsInstanceOf<string>(result);
+            }
         }
     }
 }

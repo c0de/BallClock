@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,8 @@ namespace BallClock
 {
     public class Clock
     {
-        private List<int> _balls;
-        private Track _minuteTrack;
-        private Track _fiveTrack;
-        private Track _hourTrack;
-
-        public Queue Queue { get; private set; }
+        private IEnumerable<int> _originalQueue;
+        public Queue<int> Queue { get; private set; }
 
         public Clock(int balls)
         {
@@ -22,30 +19,36 @@ namespace BallClock
             if (balls > 127)
                 throw new ArgumentException("number of balls can not exceed 127");
 
-            this.Queue = new Queue();
-            this._balls = new List<int>();
-            this._hourTrack = new Track(11, this.Queue);
-            this._fiveTrack = new Track(11, this.Queue, this._hourTrack);
-            this._minuteTrack = new Track(4, this.Queue, this._fiveTrack);
-
+            this.Queue = new Queue<int>();
             for (var i = 1; i <= balls; i++) {
-                this.Queue.AddBall(i);
-                this._balls.Add(i);
+                this.Queue.Enqueue(i);
             }
+            this._originalQueue = this.Queue.ToArray();
+        }
+
+        private bool AreQueuesEqual()
+        {
+            return this._originalQueue.SequenceEqual(this.Queue);
         }
 
         public string Start()
         {
+            Track minuteTrack, fiveTrack, hourTrack;
+
+            hourTrack = new Track(this.Queue, 11);
+            fiveTrack = new Track(this.Queue, 11, hourTrack);
+            minuteTrack = new Track(this.Queue, 4, fiveTrack);
+
             var minutes = 0;
             while (true)
             {
-                this._minuteTrack.AddBall(this.Queue.GetBall());
+                minuteTrack.AddBall(this.Queue.Dequeue());
                 minutes += 1;
-                if (this._balls.SequenceEqual(this.Queue.Balls))
+                if (this.AreQueuesEqual())
                     break;
             }
 
-            return string.Format("{0} balls cycle after {1} days", _balls.Count(), (minutes / 60) / 24);
+            return string.Format("{0} balls cycle after {1} days", _originalQueue.Count(), (minutes / 60) / 24);
         }
     }
 }

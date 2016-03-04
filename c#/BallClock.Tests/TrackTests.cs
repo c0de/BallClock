@@ -13,30 +13,38 @@ namespace BallClock.Tests
         public void CreateTrackWithSpecifiedLength()
         {
             var length = 5;
-            var track = new Track(length, null);
-            Assert.AreEqual(length, track.MaxLength);
+            var track = new Track(null, length);
+            Assert.AreEqual(length, track.Capacity);
         }
 
         [TestCase]
-        public void AddBall()
+        public void CanAddBallToTrack()
         {
-            var track = new Track(5, null);
+            var track = new Track(null, 5);
             track.AddBall(1);
             Assert.AreEqual(1, track.Length);
         }
 
         [TestCase]
+        public void IsFull()
+        {
+            var track = new Track(null, 1);
+            track.AddBall(1);
+            Assert.IsTrue(track.IsFull());
+        }
+
+        [TestCase]
         public void ReturnsToQueueInReverseOrderAndAddsBallToNextQueue()
         {
-            var queue = new Queue();
-            var hourTrack = new Track(2, queue);
-            var minuteTrack = new Track(2, queue, hourTrack);
+            var queue = new Queue<int>();
+            var hourTrack = new Track(queue, 2);
+            var minuteTrack = new Track(queue, 2, hourTrack);
             minuteTrack.AddBall(1);
             minuteTrack.AddBall(2);
             minuteTrack.AddBall(3);
             Assert.AreEqual(0, minuteTrack.Length);
             Assert.AreEqual(1, hourTrack.Length);
-            Assert.AreEqual(3, hourTrack[0]);
+            Assert.AreEqual(3, hourTrack.First());
             Assert.AreEqual(2, queue.First());
             Assert.AreEqual(1, queue.Last());
         }
@@ -44,15 +52,14 @@ namespace BallClock.Tests
         [TestCase]
         public void ReturnsToQueueInReverseOrder()
         {
-            var queue = new Queue();
-            var hourTrack = new Track(2, queue);
+            var queue = new Queue<int>();
+            var hourTrack = new Track(queue, 2);
             hourTrack.AddBall(1);
             hourTrack.AddBall(2);
             hourTrack.AddBall(3);
             Assert.AreEqual(0, hourTrack.Length);
-            Assert.AreEqual(2, queue[0]);
-            Assert.AreEqual(1, queue[1]);
-            Assert.AreEqual(3, queue[2]);
+            Assert.AreEqual(2, queue.First());
+            Assert.AreEqual(3, queue.Last());
         }
     }
 }

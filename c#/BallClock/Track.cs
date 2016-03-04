@@ -8,25 +8,17 @@ namespace BallClock
 {
     public class Track
     {
-        public int MaxLength { get; private set; }
-        private List<int> _balls;
-        private Queue _queue;
+        public int Capacity { get; private set; }
+        private Stack<int> _balls;
+        private Queue<int> _queue;
         private Track _nextTrack;
 
-        public Track(int maxLength, Queue queue, Track nextTrack = null)
+        public Track(Queue<int> queue, int capacity, Track nextTrack = null)
         {
-            this.MaxLength = maxLength;
-            this._balls = new List<int>();
             this._queue = queue;
+            this.Capacity = capacity;
+            this._balls = new Stack<int>(capacity);
             this._nextTrack = nextTrack;
-        }
-
-        public int this[int index]
-        {
-            get
-            {
-                return this._balls[index];
-            }
         }
 
         public int Length
@@ -37,16 +29,16 @@ namespace BallClock
             }
         }
 
-        private bool IsFull()
+        public bool IsFull()
         {
-            return this.Length == this.MaxLength;
+            return this.Length == this.Capacity;
         }
 
         public void AddBall(int ball)
         {
             if (!this.IsFull())
             {
-                this._balls.Add(ball);
+                this._balls.Push(ball);
             }
             else
             {
@@ -61,7 +53,7 @@ namespace BallClock
             this._balls.Reverse();
             foreach (var ball in this._balls)
             {
-                this._queue.AddBall(ball);
+                this._queue.Enqueue(ball);
             }
         }
 
@@ -73,8 +65,13 @@ namespace BallClock
             }
             else
             {
-                this._queue.AddBall(ball);
+                this._queue.Enqueue(ball);
             }
+        }
+
+        public int First()
+        {
+            return this._balls.First();
         }
     }
 }
