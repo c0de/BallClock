@@ -1,7 +1,7 @@
 ts/node_modules/
 ts/typings/
-ts/*.js
-ts/*.map
+ts/*/*.js
+ts/*/*.map
 
 c#/packages
 c#/*/packages
