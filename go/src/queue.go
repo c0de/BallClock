@@ -1,15 +1,16 @@
 package ballclock
 
 type Queue struct {
-	*BallTrack
+	balls      []int
+	currentPos int
 }
 
 func NewQueue(cap int) *Queue {
 	q := new(Queue)
-	q.BallTrack = NewBallTrack(cap)
+	q.balls = make([]int, cap, cap)
 
 	for i := 0; i < cap; i++ {
-		q.AddBall(i+1)
+		q.AddBall(i + 1)
 	}
 
 	return q
@@ -18,7 +19,15 @@ func NewQueue(cap int) *Queue {
 func (q *Queue) GetBall() int {
 	b := q.balls[0]
 
-	q.balls = q.balls[1:]
+	tmp := make([]int, len(q.balls), cap(q.balls))
+	copy(tmp, q.balls[1:])
+	q.balls = tmp
+	q.currentPos -= 1
 
-	return b;
+	return b
+}
+
+func (q *Queue) AddBall(b int) {
+	q.balls[q.currentPos] = b
+	q.currentPos += 1
 }

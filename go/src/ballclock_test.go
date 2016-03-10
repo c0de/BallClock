@@ -1,8 +1,8 @@
 package ballclock
 
 import (
-	"testing"
 	. "github.com/smartystreets/goconvey/convey"
+	"testing"
 )
 
 func TestBallClock(t *testing.T) {
@@ -20,16 +20,30 @@ func TestBallClock(t *testing.T) {
 			So(e, ShouldEqual, "number of balls can not exceed 127")
 		})
 
-		Convey("sets minutes when given the correct number of balls", func() {
-			c, _ := New(27)
-			So(c.minutes, ShouldEqual, 0)
-		})
-
-		Convey("sets queue when given the correct number of balls", func() {
+		Convey("creates a queue when given the correct number of balls", func() {
 			balls := 27
 			c, _ := New(balls)
 			So(len(c.queue.balls), ShouldEqual, balls)
 		})
 
-  })
+	})
+
+	Convey("Start", t, func() {
+
+		Convey("returns a string starting with the number of balls given", func() {
+			c, _ := New(27)
+			So(c.Start(), ShouldStartWith, "27")
+		})
+
+		Convey("returns 15 days when given 30 balls", func() {
+			c, _ := New(30)
+			So(c.Start(), ShouldEqual, "30 balls cycle after 15 days")
+		})
+
+		Convey("returns 378 days when given 45 balls", func() {
+			c, _ := New(45)
+			So(c.Start(), ShouldEqual, "45 balls cycle after 378 days")
+		})
+
+	})
 }
